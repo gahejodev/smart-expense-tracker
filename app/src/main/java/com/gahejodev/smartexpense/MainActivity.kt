@@ -62,6 +62,7 @@ fun ExpenseScreen(vm: ExpenseViewModel) {
     val budget = budgets.firstOrNull { it.month == month }?.amount ?: 0L
     val categories = if (type == "Expense") listOf("Food", "Transport", "Bills", "Shopping", "Health", "Other") else listOf("Salary", "Business", "Gift", "Other")
     LaunchedEffect(type) { if (category !in categories) category = categories.first() }
+    LaunchedEffect(month) { budgetInput = budgets.firstOrNull { it.month == month }?.amount?.toString() ?: "" }
     Column(Modifier.fillMaxSize().padding(16.dp)) {
         Text("Smart Expense Tracker", style = MaterialTheme.typography.headlineSmall)
         Spacer(Modifier.height(8.dp))
@@ -106,7 +107,7 @@ fun ExpenseScreen(vm: ExpenseViewModel) {
             HorizontalDivider(Modifier.padding(vertical = 8.dp))
             Text("Monthly budget", style = MaterialTheme.typography.titleMedium)
             OutlinedTextField(value = budgetInput, onValueChange = { budgetInput = it.filter(Char::isDigit) }, label = { Text("Budget in PKR") })
-            Button(onClick = { budgetInput.toLongOrNull()?.let { vm.setBudget(month, it); budgetInput = "" } }, enabled = budgetInput.toLongOrNull() != null) { Text("Set Budget") }
+            Button(onClick = { budgetInput.toLongOrNull()?.let { vm.setBudget(month, it) } }, enabled = budgetInput.toLongOrNull() != null) { Text("Set Budget") }
             HorizontalDivider(Modifier.padding(vertical = 8.dp))
             Text("Transactions (${filtered.size})", style = MaterialTheme.typography.titleMedium)
             if (filtered.isEmpty()) Text("No transactions this month.")
