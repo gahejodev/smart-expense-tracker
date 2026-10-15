@@ -73,7 +73,11 @@ fun ExpenseScreen(vm: ExpenseViewModel) {
         }
         Text("Income: Rs $income    Expenses: Rs $spending")
         Text("Balance: Rs ${income - spending}", style = MaterialTheme.typography.titleMedium)
-        Text("Budget: Rs $budget | Remaining: Rs ${budget - spending}")
+        if (budget > 0) {
+            Text("Budget: Rs $budget | Remaining: Rs ${budget - spending}")
+        } else {
+            Text("Monthly budget not set")
+        }
         if (budget > 0) LinearProgressIndicator(progress = { (spending.toFloat() / budget).coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth())
         HorizontalDivider(Modifier.padding(vertical = 8.dp))
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
